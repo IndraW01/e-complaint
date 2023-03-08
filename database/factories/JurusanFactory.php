@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class JurusanFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->unique()->randomElement(['Teknik Industri', 'Informatika', 'Sistem Informasi', 'Teknik Elektro', 'Teknik Geologi']),
+            'slug' => fn (array $attributes) => Str::slug($attributes['name']),
+            'kaprodi' => fake()->name(),
         ];
     }
 }

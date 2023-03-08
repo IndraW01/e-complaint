@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Mahasiswa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,11 @@ class TiketFactory extends Factory
      */
     public function definition(): array
     {
+        $mahasiswas = Mahasiswa::query()->pluck('id')->toArray();
+
         return [
-            //
+            'mahasiswa_id' => fake()->unique()->randomElement($mahasiswas),
+            'token' => fake()->unique()->uuid()
         ];
     }
 }
