@@ -14,7 +14,6 @@ class TiketSeeder extends Seeder
      */
     public function run(): void
     {
-        $mahasiswas = Mahasiswa::query()->get()->count();
-        Tiket::factory()->count($mahasiswas)->create();
+        Tiket::factory()->count(20)->create();
     }
 }

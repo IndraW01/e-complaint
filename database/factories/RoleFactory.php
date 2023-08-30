@@ -18,7 +18,7 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->randomElement(['admin', 'staff', 'mahasiswa']),
+            'name' => fake()->unique()->randomElement(['admin', 'superadmin']),
             'slug' => fn (array $attributes) => Str::slug($attributes['name']),
         ];
     }

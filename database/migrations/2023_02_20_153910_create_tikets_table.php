@@ -13,8 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tikets', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Mahasiswa::class)->unique()->constrained();
+            $table->uuid('id')->primary();
+            $table->foreignIdFor(Mahasiswa::class)->nullable()->constrained()->nullOnDelete()->cascadeOnUpdate();
             $table->string('token')->unique();
             $table->timestamps();
         });

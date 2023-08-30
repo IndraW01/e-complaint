@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Mahasiswa;
 use App\Models\Pengaduan;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -14,9 +15,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Pengaduan::class)->constrained();
+            $table->uuid('id')->primary();
+            $table->uuidMorphs('commentable');
+            $table->foreignIdFor(Pengaduan::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->text('pesan');
             $table->timestamps();
         });

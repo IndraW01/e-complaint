@@ -14,12 +14,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengaduans', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignIdFor(Tiket::class)->unique()->constrained();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('deskripsi');
-            $table->string('status');
+            $table->string('status')->default('pending');
             $table->integer('rating')->nullable();
             $table->timestamps();
         });

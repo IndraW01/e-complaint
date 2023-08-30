@@ -15,10 +15,11 @@ class MahasiswaSeeder extends Seeder
      */
     public function run(): void
     {
-        $usersCount = User::query()->whereHas('Role', function (Builder $query) {
-            $query->whereName('mahasiswa');
-        })->get()->count();
+        Mahasiswa::factory()->count(10)->create();
 
-        Mahasiswa::factory()->count($usersCount)->create();
+        Mahasiswa::query()->first()->update([
+            'name' => 'Azza',
+            'nim' => '1915036042',
+        ]);
     }
 }

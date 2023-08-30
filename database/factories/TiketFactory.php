@@ -20,7 +20,7 @@ class TiketFactory extends Factory
         $mahasiswas = Mahasiswa::query()->pluck('id')->toArray();
 
         return [
-            'mahasiswa_id' => fake()->unique()->randomElement($mahasiswas),
+            'mahasiswa_id' => fake()->randomElement($mahasiswas),
             'token' => fake()->unique()->uuid()
         ];
     }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>E-Complaint</title>
+    <title>{{ $title }}</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/unmul.png') }}" />
@@ -18,17 +18,24 @@
     <!-- Custom Css -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom.min.css?v=1.2.0') }}" />
 
-    {{-- My Css --}}
-    @stack('my-css')
-
-    {{-- Font Awesome --}}
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
         integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- Livewire css -->
+    @livewireStyles
+
+    <!-- Vite -->
+    @vite('resources/js/app.js')
+
+    <!-- My Css -->
+    @stack('my-css')
 </head>
 
-<body class="  ">
+<body>
+    @include('sweetalert::alert')
+
     <!-- loader Start -->
     <div id="loading">
         <div class="loader simple-loader">
@@ -45,7 +52,7 @@
         <div class="position-relative iq-banner">
             {{-- Navbar --}}
             {{-- Tobar --}}
-            <x-partials.topbar />
+            <x-partials.topbar :pengaduanNotification="$pengaduanNotification" />
             {{-- End Topbar --}}
             {{-- Jumbutron --}}
             <x-partials.jumbutron />
@@ -91,7 +98,10 @@
     <!-- App Script -->
     <script src="{{ asset('assets/js/hope-ui.js') }}" defer></script>
 
-    {{-- My Javascript --}}
+    <!-- Livewire Js -->
+    @livewireScripts
+
+    <!-- My Js -->
     @stack('my-js')
 </body>
 

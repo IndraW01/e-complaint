@@ -10,7 +10,10 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\KategoriRequest;
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\Role;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KategoriController extends Controller
 {
@@ -19,40 +22,37 @@ class KategoriController extends Controller
      */
     public function index(): Response
     {
-        return response()->view('master.kategori.index');
+        return response()->view('master.kategori.index', [
+            'kategoris' => Kategori::query()->latest()->paginate(10)
+        ]);
     }
 
-    public function datatable(): DataTables
+    public function create(): Response
     {
-        if (request()->ajax()) {
-            $kategoris = Kategori::query()->latest()->get();
-            return DataTables::of($kategoris)
-                ->addIndexColumn()
-                ->addColumn('action', fn () => '<a href="#" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square fa-fw"></i> Ubah</a> <a href="#" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can fa-fw"></i> Hapus</a>')
-                ->editColumn('slug', fn (Kategori $kategori) => '<span class="badge bg-success" style="font-size: 12px">' . $kategori->slug . '</span>')
-                ->rawColumns(['action', 'slug'])
-                ->toJson();
-        }
+        return response()->view('master.kategori.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(KategoriRequest $request): JsonResponse
+    public function store(KategoriRequest $request): RedirectResponse
     {
-        Kategori::query()->create($request->validated());
+        DB::beginTransaction();
+        try {
+            $kategori = Kategori::query()->create($request->validated());
+            $role = Role::create(['name' => 'Kepala ' . $kategori->name]);
+            $role->RoleKategori()->create(['kategori_id' => $kategori->id]);
 
-        return response()->json([
-            'message' => "Berhasil menambah kategori"
-        ], 201);
-    }
+            DB::commit();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Kategori $kategori): Response
-    {
-        //
+            Alert::success('Berhasil', 'Kategori berhasil ditambahkan!');
+            return redirect()->route('master.kategori.index');
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            Alert::error('Error', 'Message ' . $exception->getMessage());
+            return redirect()->route('master.kategori.index');
+        }
     }
 
     /**
@@ -60,15 +60,18 @@ class KategoriController extends Controller
      */
     public function edit(Kategori $kategori): Response
     {
-        //
+        return response()->view('master.kategori.edit', ['kategori' => $kategori]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kategori $kategori): RedirectResponse
+    public function update(KategoriRequest $request, Kategori $kategori): RedirectResponse
     {
-        //
+        $kategori->update($request->safe()->only(['name', 'slug']));
+
+        Alert::success('Berhasil', 'Kategori berhasil diubah!');
+        return redirect()->route('master.kategori.index');
     }
 
     /**
@@ -76,13 +79,32 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori): RedirectResponse
     {
-        //
+        DB::beginTransaction();
+        try {
+            Role::query()->where('id', $kategori->RoleKategori->role_id)->delete();
+            $kategori->delete();
+
+            DB::commit();
+
+            Alert::success('Berhasil', 'Kategori berhasil dihapus!');
+            return redirect()->route('master.kategori.index');
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            Alert::error('Error', 'Message ' . $exception->getMessage());
+            return redirect()->route('master.kategori.index');
+        }
     }
 
     public function slug(Request $request): JsonResponse
     {
-        $slug = Kategori::query()->where('slug', Str::slug($request->name))->exists() ? Str::slug($request->name) . '-' . rand(1, 99) : Str::slug($request->name);
+        if ($request->has('slugEdit')) {
+            $slugGenerate = Str::slug($request->name);
+            $slug = $slugGenerate === $request->slugEdit ? $slugGenerate : (Kategori::query()->where('slug', Str::slug($request->name))->exists() ? Str::slug($request->name) . '-' . rand(1, 99) : Str::slug($request->name));
+        } else {
+            $slug = Kategori::query()->where('slug', Str::slug($request->name))->exists() ? Str::slug($request->name) . '-' . rand(1, 99) : Str::slug($request->name);
+        }
 
-        return response()->json(['slug' => $slug], 200);
+        return response()->json(['slugJson' => $slug], 200);
     }
 }

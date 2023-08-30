@@ -16,6 +16,6 @@ class PengaduanSeeder extends Seeder
     {
         $tikets = Tiket::query()->get()->count();
 
-        Pengaduan::factory()->count(5)->create();
+        Pengaduan::factory()->count($tikets)->create();
     }
 }

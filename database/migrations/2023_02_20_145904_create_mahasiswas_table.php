@@ -14,10 +14,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mahasiswas', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(User::class)->unique()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->uuid('id')->primary();
             $table->foreignIdFor(Jurusan::class)->constrained();
-            $table->string('nim');
+            $table->string('name');
+            $table->string('nim')->unique();
+            $table->string('email')->unique()->nullable();
+            $table->string('password');
+            $table->string('angkatan');
+            $table->string('foto')->nullable()->unique();
             $table->timestamps();
         });
     }

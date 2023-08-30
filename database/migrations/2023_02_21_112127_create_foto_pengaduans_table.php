@@ -13,9 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('foto_pengaduans', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Pengaduan::class)->constrained();
+            $table->uuid('id')->primary();
+            $table->foreignIdFor(Pengaduan::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name')->unique();
+            $table->boolean('isAdmin')->default(false);
             $table->timestamps();
         });
     }

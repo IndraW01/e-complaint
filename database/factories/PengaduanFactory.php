@@ -26,7 +26,7 @@ class PengaduanFactory extends Factory
             'slug' => fn (array $attributes) => Str::slug($attributes['title']),
             'deskripsi' => collect(fake()->paragraphs(mt_rand(3, 5)))->map(fn ($deskrip) => "<p>" . $deskrip . "</p>")->implode(' '),
             'status' => fake()->randomElement(['success', 'process', 'failed', 'pending']),
-            'rating' => fake()->randomElement([1, 2, 3, 4, 5]),
+            'rating' => fn (array $attributes) => $attributes['status'] == 'success' ? fake()->randomElement([1, 2, 3, 4, null]) : null,
         ];
     }
 }

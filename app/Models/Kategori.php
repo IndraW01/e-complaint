@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Kategori extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     protected $fillable = [
         'name',
@@ -16,8 +18,13 @@ class Kategori extends Model
     ];
 
     // Relasi
-    public function Pengaduans(): HasMany
+    public function Pengaduans(): BelongsToMany
     {
-        return $this->hasMany(Pengaduan::class);
+        return $this->belongsToMany(Pengaduan::class);
+    }
+
+    public function RoleKategori(): HasOne
+    {
+        return $this->hasOne(RoleKategori::class, 'kategori_id', 'id');
     }
 }

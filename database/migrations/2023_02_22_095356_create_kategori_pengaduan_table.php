@@ -14,11 +14,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kategori_pengaduan', function (Blueprint $table) {
-            $table->id();
             $table->foreignIdFor(Pengaduan::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignIdFor(Kategori::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->unique(['pengaduan_id', 'kategori_id']);
-            $table->timestamps();
         });
     }
 

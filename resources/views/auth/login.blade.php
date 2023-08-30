@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Login</title>
+    <title>Login Admin & Staff</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/unmul.png') }}" />
@@ -34,14 +34,16 @@
                         <div class="col-md-10">
                             <div class="card card-transparent shadow-none d-flex justify-content-center mb-0 auth-card">
                                 <div class="card-body">
-                                    <a href="../../dashboard/index.html"
-                                        class="navbar-brand d-flex align-items-center mb-3">
+                                    <a href="#"
+                                        class="navbar-brand d-flex align-items-center justify-content-center mb-3">
                                         <!--Logo start-->
-                                        <x-main-logo />
+                                        {{-- <x-main-logo /> --}}
+                                        <img src="{{ asset('assets/images/unmul.png') }}" alt="" width="30"
+                                            height="30">
                                         <!--logo End-->
                                         <h4 class="logo-title ms-3">E-Complaint</h4>
                                     </a>
-                                    <h2 class="mb-2 text-center">Login</h2>
+                                    <h3 class="mb-2 text-center">Login</h3>
                                     @error('failedLogin')
                                         <div class="alert alert-danger" role="alert">
                                             {{ $message }}
@@ -76,14 +78,6 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12 d-flex justify-content-between">
-                                                <div class="form-check mb-3">
-                                                    <input type="checkbox" class="form-check-input" id="customCheck1">
-                                                    <label class="form-check-label" for="customCheck1">Remember
-                                                        Me</label>
-                                                </div>
-                                                <a href="recoverpw.html">Forgot Password?</a>
-                                            </div>
                                         </div>
                                         <div class="d-flex justify-content-center">
                                             <button type="submit" class="btn btn-primary">Sign In</button>
@@ -94,24 +88,13 @@
                         </div>
                     </div>
                     <div class="sign-bg">
-                        <svg width="280" height="230" viewBox="0 0 431 398" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <g opacity="0.05">
-                                <rect x="-157.085" y="193.773" width="543" height="77.5714" rx="38.7857"
-                                    transform="rotate(-45 -157.085 193.773)" fill="#3B8AFF" />
-                                <rect x="7.46875" y="358.327" width="543" height="77.5714" rx="38.7857"
-                                    transform="rotate(-45 7.46875 358.327)" fill="#3B8AFF" />
-                                <rect x="61.9355" y="138.545" width="310.286" height="77.5714" rx="38.7857"
-                                    transform="rotate(45 61.9355 138.545)" fill="#3B8AFF" />
-                                <rect x="62.3154" y="-190.173" width="543" height="77.5714" rx="38.7857"
-                                    transform="rotate(45 62.3154 -190.173)" fill="#3B8AFF" />
-                            </g>
-                        </svg>
+                        <img src="{{ asset('assets/images/unmul-png.png') }}" alt="" width="300"
+                            style="opacity: .1;">
                     </div>
                 </div>
-                <div class="col-md-6 d-md-block d-none bg-primary p-0 mt-n1 vh-100 overflow-hidden">
-                    <img src="{{ asset('assets/images/auth/01.png') }}"
-                        class="img-fluid gradient-main animated-scaleX" alt="images">
+                <div
+                    class="col-md-6 d-none bg-primary p-0 mt-n1 vh-100 overflow-hidden d-md-flex justify-content-md-center align-items-md-center">
+                    <img src="{{ asset('assets/images/ilustrasi/login.png') }}" alt="images" class="w-75">
                 </div>
             </div>
         </section>

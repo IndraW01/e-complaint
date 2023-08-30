@@ -6,6 +6,7 @@ use App\Models\Jurusan;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Mahasiswa>
@@ -19,16 +20,15 @@ class MahasiswaFactory extends Factory
      */
     public function definition(): array
     {
-        $users = User::query()->withWhereHas('Role', function (Builder $query) {
-            $query->whereName('mahasiswa');
-        })->pluck('id')->toArray();
-
         $jurusans = Jurusan::query()->pluck('id')->toArray();
 
         return [
-            'user_id' => fake()->unique()->randomElement($users),
             'jurusan_id' => fake()->randomElement($jurusans),
+            'name' => fake()->name(),
+            'email' => fake()->email(),
             'nim' => fake()->numerify('##########'),
+            'password' => 'password',
+            'angkatan' => fake()->randomElement([2018, 2019, 2020, 2021, 2022])
         ];
     }
 }
