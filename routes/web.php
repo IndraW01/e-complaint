@@ -22,13 +22,6 @@ Route::get('/', function () {
     ]);
 })->name('landing');
 
-Route::get('/pdd', function () {
-    $mahasiswas = Mahasiswa::query()->with('jurusans')->get();
-    return view('pdd.index', [
-        'mahasiswas' => $mahasiswas
-    ]);
-});
-
 // Dashboard
 Route::get('/dashboard', DashboardController::class)->name('dashboard')->middleware('auth:web');
 
